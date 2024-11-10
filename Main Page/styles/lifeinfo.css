@@ -1,0 +1,38 @@
+*{
+    text-align: center;
+}
+
+body{
+    background-color: #000;
+}
+
+input, select{
+    color: black;
+    border: 2px solid var(--main-color);
+    border-radius: 20px;
+    margin-top: -20px;
+    height: 30px;
+    width:290px;
+    margin-left: 0PX;
+    font-size: 17px;
+    font-weight: bold;
+    margin: 5px;
+}
+.lifeinfo{
+    color: #ffffff;
+    width: 400px;
+    border: solid 2px white;
+    margin: auto;
+    border-radius: 2px;
+}
+.lifeinfo span{
+    color: #41bacf;
+}
+.lifeinfo h4{
+    font-size: 18px;
+    margin-bottom: 7px;
+}
+
+.name{
+    margin: 20px;
+}

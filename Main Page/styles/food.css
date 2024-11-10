@@ -1,0 +1,74 @@
+*{
+    margin: auto;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: -apple-system,sans-serif;
+}
+:root{
+    --bg-color:#000;
+    --snd-bg-color:#111;
+    --text-color:#fff;
+    --main-color:#40e0d0;
+}
+body{
+    background:var(--bg-color);
+}
+
+header{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right:0;
+    z-index: 1000;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding: 2rem 9%;
+    background: rgba(0,0,0,0.5); 
+    backdrop-filter: blur(10px);
+    transition: all 0.5s ease;
+    color: var(--text-color);
+}
+
+.allergies{
+    color: var(--main-color-color);
+    align-items: center;
+    justify-content: center;
+    margin-left: 8%;
+}
+.dietfood{
+    color: var(--main-color-color);
+    align-items: center;
+    justify-content: center;
+    margin-left: 8%;
+}
+
+
+.milk,h2{
+    color: var(--main-color);
+    margin: 20px;
+    font-weight: 700;
+    margin-left: 50px;
+}
+.infopart{
+    margin-left: 20px;
+    color: var(--text-color);
+}
+
+img{
+    height: 40%;
+    width: 40%;
+    margin-left: 650px;
+    margin-top: -200px;
+    border-radius: 25px;
+    box-shadow: 0 0 10px var(--main-color);
+}
+
+dd{
+    margin-left: 20px;
+}

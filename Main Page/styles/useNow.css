@@ -1,0 +1,93 @@
+*{
+    margin: auto;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: -apple-system,sans-serif;
+}
+header{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right:0;
+    z-index: 1000;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding: 2rem 9%;
+    background: rgba(0,0,0,0.5); 
+    backdrop-filter: blur(10px);
+    transition: all 0.5s ease;
+    color: var(--text-color);
+}
+h1{
+    color: white;
+}
+
+body{
+    background-color: black;
+    text-align: center;
+}
+hr{
+    border: 2px solid white;
+}
+.startDiv{
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+.addFriend{
+    margin-top: 50px;
+}
+.startBTN{
+    color: aqua;
+    background-color: black;
+    width: 35%;
+    height: 90px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgb(0,255,255);
+    margin: 20px;
+    font-size: 40px;
+    transition: 0.75s;
+}
+.startBTN:hover{
+    color: rgb(255, 255, 255);
+    background-color: aqua;
+    width: 55%;
+}
+
+input{
+    width: 400px;
+    height: 50px;
+    font-size: 33px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px aqua;
+}
+.searchBTN{
+    margin-left: 10px;
+    width: 150px;
+    border-radius: 10px;
+    height: 50px;
+    box-shadow: 0 0 10px aqua;
+    color: aqua;
+    background-color: black;
+    font-size: 40px;
+    transition: 0.75s;
+}
+.searchBTN:hover{
+    color: rgb(255, 255, 255);
+    background-color: aqua;
+}
+.found{
+    border: 2px solid white;
+    border-radius: 5px;
+    padding-top: 5px;
+    width: 400px;
+    height: 50px;
+}
+.result{
+    margin-top: 30px;
+}

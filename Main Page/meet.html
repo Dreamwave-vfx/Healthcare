@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beautiful Video Meeting Interface</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .meeting-form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .meeting-form:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.2);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-top: 56.25%;
+            background: #2d3748;
+        }
+
+        #localVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .meeting-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #zoomMeeting {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        .error-message {
+            background: #fff5f5;
+            color: #c53030;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .status-online {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .status-offline {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Video Meeting Hub</h1>
+            <p>Connect with your team in high definition</p>
+        </div>
+
+        <div class="meeting-form">
+            <div class="form-group">
+                <label for="meetingId">Meeting ID</label>
+                <input type="text" id="meetingId" placeholder="Enter your meeting ID" />
+            </div>
+            <button onclick="window.location.href = document.getElementById('meetingId').value;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 10l5 5-5 5"/>
+                    <path d="M4 4v7a4 4 0 0 0 4 4h12"/>
+                </svg>
+                Join Meeting
+            </button>
+        </div>
+
+        <div class="video-grid">
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video id="localVideo" autoplay muted playsinline></video>
+                </div>
+                <div class="status-indicator status-online" id="videoStatus">
+                    Camera Ready
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="startVideo()" id="startButton">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 7l-7 5 7 5V7z"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+                Start Video
+            </button>
+            <button onclick="stopVideo()" id="stopButton" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                </svg>
+                Stop Video
+            </button>
+            <button onclick="toggleMute()" id="muteButton">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                </svg>
+                Toggle Mute
+            </button>
+        </div>
+
+        <div class="meeting-container">
+            <div id="meetingError" class="error-message"></div>
+            <iframe id="zoomMeeting" style="display: none;"></iframe>
+        </div>
+    </div>
+
+    <div class="fab" onclick="showHelp()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+    </div>
+
+    <script>
+        let stream = null;
+        let isMuted = true;
+        function openMeet(){
+            
+            window.location.href = document.getElementById("meetingId");
+        }
+        async function startVideo() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
+                });
+                
+                document.getElementById('localVideo').srcObject = stream;
+                document.getElementById('startButton').disabled = true;
+                document.getElementById('stopButton').disabled = false;
+                document.getElementById('muteButton').disabled = false;
+                document.getElementById('videoStatus').className = 'status-indicator status-online';
+                document.getElementById('videoStatus').textContent = 'Camera Active';
+                
+                showNotification('Camera and microphone activated successfully!');
+            } catch (err) {
+                document.getElementById('meetingError').style.display = 'block';
+                document.getElementById('meetingError').textContent = 
+                    'Error accessing camera or microphone: ' + err.message;
+                document.getElementById('videoStatus').className = 'status-indicator status-offline';
+                document.getElementById('videoStatus').textContent = 'Camera Error';
+            }
+        }
+
+        function stopVideo() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                document.getElementById('localVideo').srcObject = null;
+                document.getElementById('startButton').disabled = false;
+                document.getElementById('stopButton').disabled = true;
+                document.getElementById('muteButton').disabled = true;
+                document.getElementById('videoStatus').className = 'status-indicator status-offline';
+                document.getElementById('videoStatus').textContent = 'Camera Off';
+            }
+        }
+
+        function toggleMute() {
+            if (stream) {
+                const audioTracks = stream.getAudioTracks();
+                audioTracks.forEach(track => {
+                    track.enabled = !track.enabled;
+                });
+                isMuted = !isMuted;
+                document.getElementById('muteButton').innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        ${isMuted ? '' : '<line x1="1" y1="1" x2="23" y2="23"/>'}
+                    </svg>
+                    ${isMuted ? 'Unmute' : 'Mute'}`;
+            }
+        }
+
+        function joinMeeting() {
+            const meetingId = document.getElementById('meetingId').value.replace(/\s/g, '');
+            const passcode = document.getElementById('passcode').value;
+            
+            if (!meetingId) {
+                showError('Please enter a valid meeting ID');
+                return;
+            }
+
+            const zoomUrl = `https://zoom.us/j/${meetingId}`;
+            const meetingFrame = document.getElementById('zoomMeeting');
+            meetingFrame.style.display = 'block';
+            meetingFrame.src = zoomUrl;
+            
+            showNotification('Joining meeting...');
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('meetingError');
+            errorElement.style.display = 'block';
+            errorElement.textContent = message;
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 3000);
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '15px 25px';
+            notification.style.background = 'white';
+            notification.style.borderRadius = '10px';
+            notification.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            notification.style.animation = 'fadeIn 0.3s ease';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        function showHelp() {
+            showNotification('Need help? Contact support at GetPureMed@example.com');
+        }
+
+        window.onbeforeunload = function() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        };
+    </script>
